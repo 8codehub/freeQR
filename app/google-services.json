@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "879804956478",
+    "project_id": "easy-qr-studio",
+    "storage_bucket": "easy-qr-studio.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:879804956478:android:94097bb2d860adf7a5766f",
+        "android_client_info": {
+          "package_name": "com.free.qr"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMnuFN4awJMfTbIkr6b00tAb9dXFIN8V8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
