@@ -1,0 +1,5 @@
+<resources>
+    <string name="editing_content">Редактирование содержимого</string>
+    <string name="editing_text">Редактирование текста</string>
+    <string name="keyboard_done">Готово</string>
+</resources>

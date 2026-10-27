@@ -16,3 +16,14 @@ local.properties
 .idea/*
 /app/release/*
 /.idea/
+
+**/build/
+
+/.kotlin/
+
+**/xcuserdata/
+
+keystore.properties
+*.jks
+*.keystore
+/androidApp/release/
