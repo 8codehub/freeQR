@@ -1,5 +1,7 @@
 package qrstudio.ui
 
+import org.jetbrains.compose.resources.stringResource
+import qrstudio.generated.resources.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.*
 import androidx.compose.foundation.layout.*
@@ -27,6 +29,7 @@ import qrstudio.vm.EditorViewModel
 
 @Composable fun PreviewCanvas(state: EditorState,vm: EditorViewModel,measurer: TextMeasurer,sans: FontFamily,previewHeight: androidx.compose.ui.unit.Dp=330.dp) {
     val t=LocalTokens.current;val focus=LocalFocusManager.current
+    val canvasLabel=stringResource(Res.string.canvas_description)
     val logicalW=1080f;val logicalH=state.canvasHeight.toFloat()
     val frame=remember(state,measurer,sans) { prepareDesign(state,logicalW,logicalH,measurer,sans) }
     val current by rememberUpdatedState(state);val currentFrame by rememberUpdatedState(frame)
@@ -34,7 +37,7 @@ import qrstudio.vm.EditorViewModel
         val aspect=state.ratio.a.toFloat()/state.ratio.b
         val width=minOf(maxWidth,maxHeight*aspect);val height=width/aspect
         Canvas(Modifier.size(width,height).dropShadow(RectangleShape,Shadow(radius=10.dp,color=t.neutral900.copy(alpha=.16f),offset=DpOffset(0.dp,3.dp))).clipToBounds()
-            .semantics { contentDescription="QR design canvas" }
+            .semantics { contentDescription=canvasLabel }
             .pointerInput(width,height) {
                 awaitEachGesture {
                     val down=awaitFirstDown();focus.clearFocus()

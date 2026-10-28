@@ -1,5 +1,7 @@
 package qrstudio.ui
 
+import org.jetbrains.compose.resources.stringResource
+import qrstudio.generated.resources.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
@@ -21,7 +23,7 @@ import qrstudio.ui.components.*
 
 @Composable fun BottomNav(tab: EditorTab,onTab: (EditorTab)->Unit) {
     val t=LocalTokens.current
-    val items=listOf(Triple(EditorTab.Content,StudioIcon.Link,"Content"),Triple(EditorTab.QrStyle,StudioIcon.QrCode,"QR style"),Triple(EditorTab.Background,StudioIcon.Image,"Background"),Triple(EditorTab.Gradient,StudioIcon.Blend,"Gradient"),Triple(EditorTab.Text,StudioIcon.Type,"Text"))
+    val items=listOf(Triple(EditorTab.Content,StudioIcon.Link,stringResource(Res.string.tab_content)),Triple(EditorTab.QrStyle,StudioIcon.QrCode,stringResource(Res.string.tab_qr_style)),Triple(EditorTab.Background,StudioIcon.Image,stringResource(Res.string.tab_background)),Triple(EditorTab.Gradient,StudioIcon.Blend,stringResource(Res.string.tab_gradient)),Triple(EditorTab.Text,StudioIcon.Type,stringResource(Res.string.tab_text)))
     Row(Modifier.fillMaxWidth().testTag("bottom-navigation").background(t.bg).drawBehind { drawLine(t.divider,Offset.Zero,Offset(size.width,0f),2.dp.toPx()) }.navigationBarsPadding()) {
         items.forEach { (value,icon,label) ->
             val active=value==tab

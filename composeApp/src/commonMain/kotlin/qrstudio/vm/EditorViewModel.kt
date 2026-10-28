@@ -1,5 +1,7 @@
 package qrstudio.vm
 
+import org.jetbrains.compose.resources.StringResource
+import qrstudio.generated.resources.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
@@ -52,7 +54,7 @@ class EditorViewModel(private val services: PlatformServices,initialJson: String
         val selected=state.value.selection as? Selection.Text ?: return
         edit { copy(texts=texts.map { if(it.id==selected.id) it.change() else it }) }
     }
-    fun addText()=edit { withAddedText(currentTimeMillis()) }
+    fun addText(text: String?=null)=edit { withAddedText(currentTimeMillis(),text) }
     fun deleteText()=edit { withDeletedText() }
     fun drag(selection: Selection,x: Float,y: Float) {
         val snapped=snapCenter(x,y,state.value.snapToCenter)
@@ -67,27 +69,27 @@ class EditorViewModel(private val services: PlatformServices,initialJson: String
     fun endDrag()=edit { copy(guideX=false,guideY=false) }
     fun chooseImage() { viewModelScope.launch {
         runCatching { services.picker.pick() }.onSuccess { image -> if(image!=null) edit { copy(bgMode=BackgroundMode.Image,bgImage=image.bitmap,bgImageReference=image.reference) } }
-            .onFailure { snack("The image could not be opened. Please try another image.") }
+            .onFailure { snack(Res.string.image_open_failed) }
     } }
     fun removeImage()=edit { copy(bgImage=null,bgImageReference=null) }
-    fun snack(message: String) {
+    fun snack(message: StringResource) {
         snackJob?.cancel();mutable.update { it.copy(snack=message) }
         snackJob=viewModelScope.launch { delay(3000);mutable.update { it.copy(snack=null) } }
     }
     fun export(share: Boolean,render: suspend (EditorState)->ByteArray) {
         val snapshot=state.value
         if(snapshot.exporting) return
-        if(snapshot.matrix==null) { snack(if(share) "Nothing to share. Check the QR content." else "Nothing to save. Check the QR content.");return }
+        if(snapshot.matrix==null) { snack(if(share) Res.string.nothing_to_share else Res.string.nothing_to_save);return }
         mutable.update { it.copy(exporting=true) }
         viewModelScope.launch {
             try {
                 val png=withContext(Dispatchers.Default) { render(snapshot) }
                 if(share) {
                     try { services.sharer.share(png) }
-                    catch(e: Exception) { services.saver.save(png,exportFileName());snack("Sharing failed. Image saved instead.") }
-                } else { services.saver.save(png,exportFileName());snack("Saved to Pictures/QR Studio") }
+                    catch(e: Exception) { services.saver.save(png,exportFileName());snack(Res.string.share_failed) }
+                } else { services.saver.save(png,exportFileName());snack(Res.string.saved) }
             } catch(e: CancellationException) { throw e }
-            catch(e: Exception) { snack("Could not export the image. Please try again.") }
+            catch(e: Exception) { snack(Res.string.export_failed) }
             finally { mutable.update { it.copy(exporting=false) } }
         }
     }

@@ -1,5 +1,6 @@
 package qrstudio.model
 
+import org.jetbrains.compose.resources.StringResource
 import androidx.compose.ui.graphics.ImageBitmap
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
@@ -25,7 +26,7 @@ object EditorDefaults {
     val texts: List<TextLayer> = emptyList(), val selection: Selection = Selection.Qr,
     val exportWidth: Int = EditorDefaults.ExportWidth, val snapToCenter: Boolean = EditorDefaults.SnapToCenter,
     @Transient val matrix: QrMatrix? = null, @Transient val encodingFailed: Boolean = false,
-    @Transient val snack: String? = null, @Transient val exporting: Boolean = false,
+    @Transient val snack: StringResource? = null, @Transient val exporting: Boolean = false,
     @Transient val guideX: Boolean = false, @Transient val guideY: Boolean = false
 ) {
     val canvasHeight: Int get() = (1080f * ratio.b / ratio.a).toInt()

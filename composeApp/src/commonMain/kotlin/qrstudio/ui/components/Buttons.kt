@@ -30,7 +30,7 @@ import qrstudio.theme.LocalTokens
             .background(fill.copy(alpha=if(enabled) 1f else .45f)).hoverable(source)
             .clickable(source,ripple(color=t.accent),enabled,role=Role.Button,onClick=onClick).padding(horizontal=14.dp,vertical=8.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(8.dp)) {
             if(icon!=null) Glyph(icon,modifier=Modifier.size(18.dp),color=t.bg)
-            Text(label,color=t.bg,fontSize=14.sp,fontWeight=FontWeight.ExtraBold)
+            Text(label,color=t.bg,fontSize=14.sp,fontWeight=FontWeight.ExtraBold,maxLines=1,overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis)
         }
     }
 }

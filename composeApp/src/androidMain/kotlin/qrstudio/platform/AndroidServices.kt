@@ -1,5 +1,7 @@
 package qrstudio.platform
 
+import org.jetbrains.compose.resources.getString
+import qrstudio.generated.resources.*
 import android.Manifest
 import android.content.*
 import android.content.pm.PackageManager
@@ -122,12 +124,13 @@ class AndroidImageSharer(private val activity: ComponentActivity): ImageSharer {
             val file=File(directory,"qr-studio.png").apply { writeBytes(png) }
             FileProvider.getUriForFile(activity,"${activity.packageName}.files",file)
         }
+        val title=getString(Res.string.share_chooser)
         withContext(Dispatchers.Main.immediate) {
             val intent=Intent(Intent.ACTION_SEND).apply {
                 type="image/png";putExtra(Intent.EXTRA_STREAM,uri)
                 clipData=ClipData.newRawUri("QR design",uri);addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
-            activity.startActivity(Intent.createChooser(intent,"Share QR code"))
+            activity.startActivity(Intent.createChooser(intent,title))
         }
     }
 }

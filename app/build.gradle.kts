@@ -14,8 +14,8 @@ android {
         applicationId = "com.free.qr"
         minSdk = 24
         targetSdk = 36
-        versionCode = 20
-        versionName = "3.0.1"
+        versionCode = 33
+        versionName = "3.1.33"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

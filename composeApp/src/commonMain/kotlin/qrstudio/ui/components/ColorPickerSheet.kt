@@ -1,5 +1,7 @@
 package qrstudio.ui.components
 
+import org.jetbrains.compose.resources.stringResource
+import qrstudio.generated.resources.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.*
 import androidx.compose.foundation.layout.*
@@ -36,7 +38,7 @@ fun colorHsv(color: Long): FloatArray {
     val currentHue by rememberUpdatedState(hue);val notify by rememberUpdatedState(onChange)
     ModalBottomSheet(onDismissRequest=onDismiss,shape=RectangleShape,containerColor=t.bg,contentColor=t.text,sheetState=rememberModalBottomSheetState(skipPartiallyExpanded=true),dragHandle={ Box(Modifier.padding(vertical=12.dp).size(32.dp,3.dp).background(t.divider)) }) {
         Column(Modifier.fillMaxWidth().imePadding().verticalScroll(rememberScrollState()).padding(16.dp),verticalArrangement=Arrangement.spacedBy(16.dp)) {
-            Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) { Text("Custom color",Modifier.weight(1f),fontSize=20.sp);SecondaryButton("Done",onClick=onDismiss) }
+            Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) { Text(stringResource(Res.string.custom_color),Modifier.weight(1f),fontSize=20.sp);SecondaryButton(stringResource(Res.string.keyboard_done),onClick=onDismiss) }
             Canvas(Modifier.fillMaxWidth().height(180.dp).border(1.dp,t.divider).pointerInput(Unit) {
                 fun update(pos: Offset) { sat=(pos.x/size.width).coerceIn(0f,1f);brightness=(1-pos.y/size.height).coerceIn(0f,1f);notify(hsvColor(currentHue,sat,brightness)) }
                 awaitEachGesture { val down=awaitFirstDown();update(down.position);down.consume();do { val event=awaitPointerEvent();event.changes.forEach { if(it.pressed) { update(it.position);it.consume() } } } while(event.changes.any { it.pressed }) }
@@ -46,8 +48,8 @@ fun colorHsv(color: Long): FloatArray {
                 drawCircle(Color.White,7.dp.toPx(),Offset(sat*size.width,(1-brightness)*size.height),style=Stroke(2.dp.toPx()))
                 drawCircle(Color.Black,9.dp.toPx(),Offset(sat*size.width,(1-brightness)*size.height),style=Stroke(1.dp.toPx()))
             }
-            StudioSlider("Hue",hue,0f..360f,rainbow=true) { hue=it%360;onChange(hsvColor(hue,sat,brightness)) }
-            Field("Hex") { TextInput(hex,{ next ->
+            StudioSlider(stringResource(Res.string.hue),hue,0f..360f,rainbow=true) { hue=it%360;onChange(hsvColor(hue,sat,brightness)) }
+            Field(stringResource(Res.string.hex)) { TextInput(hex,{ next ->
                 if(next.length<=7 && next.removePrefix("#").all { it.isDigit()||it.lowercaseChar() in 'a'..'f' }) {
                     hex=next
                     next.removePrefix("#").takeIf { it.length==6 }?.toLongOrNull(16)?.let { rgb ->

@@ -1,17 +1,17 @@
 import java.util.Properties
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-plugins { alias(libs.plugins.android.application);alias(libs.plugins.kotlin.compose) }
+plugins { alias(libs.plugins.android.application);alias(libs.plugins.kotlin.compose);alias(libs.plugins.google.services) }
 // Release signing is read from keystore.properties (git-ignored): storeFile, storePassword, keyAlias, keyPassword
 val keystoreProps = Properties().apply { rootProject.file("keystore.properties").takeIf { it.exists() }?.inputStream()?.use(::load) }
 android {
     namespace = "com.free.qr"
     compileSdk = 37
     defaultConfig {
-        applicationId = "com.free.qr";minSdk = 26;targetSdk = 35;versionCode = 9;versionName = "3.0"
+        applicationId = "com.free.qr";minSdk = 26;targetSdk = 36;versionCode = 10;versionName = "3.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     // Only ship the languages the app is translated into; drops ~80 unused AndroidX locales from resources.arsc
-    androidResources { localeFilters += listOf("en", "es", "ru", "tr", "hi", "ar") }
+    androidResources { localeFilters += listOf("en", "ar", "bn", "de", "es", "fr", "hi", "id", "it", "ja", "ko", "pl", "pt", "ru", "th", "tr", "uk", "ur", "vi", "zh") }
     signingConfigs {
         if (keystoreProps.isNotEmpty()) create("release") {
             storeFile = rootProject.file(keystoreProps.getProperty("storeFile"))
@@ -35,6 +35,7 @@ android {
             "/kotlin/**", "DebugProbesKt.bin", "/*.properties",
         )
     }
+    testOptions { unitTests { isIncludeAndroidResources = true;all { it.systemProperty("storeScreenshotsDir",rootProject.file("play-store-screenshots").absolutePath) } } }
     // Dependency metadata is still added to the AAB for Play, but not to standalone APKs
     dependenciesInfo { includeInApk = false;includeInBundle = true }
 }
@@ -44,6 +45,14 @@ dependencies {
     implementation(libs.activity.compose)
     implementation(libs.androidx.core)
     implementation(libs.profileinstaller)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    testImplementation(libs.junit)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.compose.uitest)
+    testImplementation(libs.coroutines.core)
+    testImplementation("androidx.compose.foundation:foundation:1.12.1")
+    testImplementation("androidx.compose.material3:material3:1.4.0")
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.runner)
     androidTestImplementation(libs.compose.uitest)

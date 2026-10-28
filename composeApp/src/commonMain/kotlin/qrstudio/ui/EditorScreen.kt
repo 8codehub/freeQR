@@ -60,7 +60,7 @@ import qrstudio.vm.EditorViewModel
                         EditorTab.Text -> TextPanel(state,vm) { picker=it }
                     }
                 }
-                state.snack?.let { EditorSnackbar(it,Modifier.fillMaxWidth().align(Alignment.BottomCenter).padding(bottom=12.dp)) }
+                state.snack?.let { EditorSnackbar(stringResource(it),Modifier.fillMaxWidth().align(Alignment.BottomCenter).padding(bottom=12.dp)) }
             }
             if(!imeVisible) BottomNav(state.tab) { focus.clearFocus();vm.tab(it) }
         }
